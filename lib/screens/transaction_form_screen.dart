@@ -15,7 +15,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   final _formKey = GlobalKey<FormState>();
   String _type = 'Gasto';
   final _amountController = TextEditingController();
-  final _categoryController = TextEditingController();
+  String _category = 'Entretenimiento';
   final _noteController = TextEditingController();
 
   void _submit() async {
@@ -26,7 +26,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
         userId: userId,
         type: _type,
         amount: double.parse(_amountController.text),
-        category: _categoryController.text,
+        category: _category,
         note: _noteController.text,
         date: DateTime.now(),
       );
@@ -39,7 +39,6 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   @override
   void dispose() {
     _amountController.dispose();
-    _categoryController.dispose();
     _noteController.dispose();
     super.dispose();
   }
@@ -71,12 +70,23 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
                 validator: (val) => val == null || val.isEmpty ? 'Campo obligatorio' : null,
               ),
               const SizedBox(height: 12),
-              TextFormField(
-                controller: _categoryController,
-                decoration: const InputDecoration(labelText: 'Categoría'),
-                validator: (val) => val == null || val.isEmpty ? 'Campo obligatorio' : null,
-              ),
-              const SizedBox(height: 12),
+              if (_type == 'Gasto') ...[
+                DropdownButtonFormField<String>(
+                  value: _category,
+                  items: const [
+                    DropdownMenuItem(value: 'Entretenimiento', child: Text('Entretenimiento')),
+                    DropdownMenuItem(value: 'Comida', child: Text('Comida')),
+                    DropdownMenuItem(value: 'Ropa', child: Text('Ropa')),
+                    DropdownMenuItem(value: 'Salud', child: Text('Salud')),
+                    DropdownMenuItem(value: 'Educación', child: Text('Educación')),
+                    DropdownMenuItem(value: 'Hogar', child: Text('Hogar')),
+                    DropdownMenuItem(value: 'Mascotas', child: Text('Mascotas'))
+                  ],
+                  onChanged: (val) => setState(() => _category = val!),
+                  decoration: const InputDecoration(labelText: 'Categoría'),
+                ),
+                const SizedBox(height: 12),
+              ],
               TextFormField(
                 controller: _noteController,
                 decoration: const InputDecoration(labelText: 'Nota (opcional)'),
