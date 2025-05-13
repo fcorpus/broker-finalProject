@@ -1,3 +1,6 @@
+//import 'dart:ffi';
+
+import 'package:broker/constantes.dart';
 import 'package:flutter/material.dart';
 
 class BalanceCard extends StatelessWidget {
@@ -14,7 +17,8 @@ class BalanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color balanceColor = balance >= 0 ? Colors.green : Colors.red;
+    final double localBalance = ingresos - gastos;
+    Color balanceColor = localBalance >= 0 ? purpleBroker : yellowBroker;
 
     return Card(
       elevation: 2,
@@ -24,11 +28,11 @@ class BalanceCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Balance: \$${balance.toStringAsFixed(2)} MXN',
+            Text('Balance: \$${localBalance.toStringAsFixed(2)} MXN',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: balanceColor)),
             const SizedBox(height: 12),
-            Text('Ingresos: \$${ingresos.toStringAsFixed(2)} MXN', style: const TextStyle(color: Colors.green)),
-            Text('Gastos: \$${gastos.toStringAsFixed(2)} MXN', style: const TextStyle(color: Colors.red)),
+            Text('Ingresos: \$${ingresos.toStringAsFixed(2)} MXN', style: const TextStyle(color: purpleBroker)),
+            Text('Gastos: \$${gastos.toStringAsFixed(2)} MXN', style: const TextStyle(color: yellowBroker)),
           ],
         ),
       ),

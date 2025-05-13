@@ -45,10 +45,11 @@ class DashboardScreen extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
+            Text('Total: ${txProvider.total.toStringAsFixed(2)}'),
             BalanceCard(
               balance: txProvider.total,
-              ingresos: txProvider.ingresos,
-              gastos: txProvider.gastos,
+              ingresos: txProvider.ingresos30,
+              gastos: txProvider.gastos30,
             ),
             const SizedBox(height: 24),
             const Text(

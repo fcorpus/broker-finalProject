@@ -20,6 +20,25 @@ class TransactionProvider with ChangeNotifier {
       .where((t) => t.type == 'Gasto')
       .fold(0, (sum, t) => sum + t.amount);
 
+  double get gastos30 {
+    final fechaLimite = DateTime.now().subtract(const Duration(days: 30));
+
+    return _transactions
+        .where((t) => t.type == 'Gasto')
+        .where((t) => t.date.isAfter(fechaLimite))
+        .fold(0, (sum, t) => sum + t.amount);
+  }
+
+  double get ingresos30 {
+    final fechaLimite = DateTime.now().subtract(const Duration(days: 30));
+
+    return _transactions
+        .where((t) => t.type == 'Igreso')
+        .where((t) => t.date.isAfter(fechaLimite))
+        .fold(0, (sum, t) => sum + t.amount);
+  }
+
+
   Future<void> loadTransactions() async {
     final prefs = await SharedPreferences.getInstance();
     final username = prefs.getString('username');
