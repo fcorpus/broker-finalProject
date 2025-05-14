@@ -33,7 +33,7 @@ class TransactionProvider with ChangeNotifier {
     final fechaLimite = DateTime.now().subtract(const Duration(days: 30));
 
     return _transactions
-        .where((t) => t.type == 'Igreso')
+        .where((t) => t.type == 'Ingreso')
         .where((t) => t.date.isAfter(fechaLimite))
         .fold(0, (sum, t) => sum + t.amount);
   }

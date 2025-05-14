@@ -1,3 +1,4 @@
+import 'package:broker/constantes.dart';
 import 'package:broker/demo.dart';
 
 import 'package:flutter/material.dart';
@@ -34,6 +35,8 @@ class BrokerApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
         useMaterial3: true,
+        scaffoldBackgroundColor: backgroundColor,
+        textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.white))
       ),
       home: Consumer<AuthProvider>(
         builder: (_, authProvider, __) {

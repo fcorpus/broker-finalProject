@@ -1,3 +1,4 @@
+import 'package:broker/constantes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:broker/models/transaction_model.dart';
@@ -15,13 +16,15 @@ class TransactionTile extends StatelessWidget {
       child: ListTile(
         leading: Icon(
           isIngreso ? Icons.arrow_downward : Icons.arrow_upward,
-          color: isIngreso ? Colors.green : Colors.red,
+          color: isIngreso ? purpleBroker : yellowBroker,
         ),
         title: Text('${isIngreso ? '+' : '-'}\$${transaction.amount.toStringAsFixed(2)} mxn'),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (!isIngreso) ...[
             Text('Categoría: ${transaction.category}'),
+            ],
             if (transaction.note.isNotEmpty) Text('Nota: ${transaction.note}'),
             Text('Fecha: ${DateFormat('dd/MM/yyyy').format(transaction.date)}'),
           ],

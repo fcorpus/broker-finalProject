@@ -26,7 +26,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
         userId: userId,
         type: _type,
         amount: double.parse(_amountController.text),
-        category: _category,
+        category: _type == 'Gasto' ? _category : '',
         note: _noteController.text,
         date: DateTime.now(),
       );

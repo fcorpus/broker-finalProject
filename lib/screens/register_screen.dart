@@ -4,6 +4,8 @@ import 'package:broker/providers/auth_provider.dart';
 import 'package:broker/providers/transaction_provider.dart';
 import 'package:broker/screens/dashboard_screen.dart';
 
+import '../constantes.dart';
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -49,11 +51,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _register,
+                style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purpleBroker)),
                 child: const Text('Crear cuenta'),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Volver a iniciar sesión'),
+                child: const Text('Volver a iniciar sesión', style: TextStyle(color: purpleBroker),),
               ),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:broker/constantes.dart';
 import 'package:broker/models/transaction_model.dart';
 import 'package:broker/providers/auth_provider.dart';
 import 'package:broker/providers/transaction_provider.dart';
@@ -46,6 +47,7 @@ class DashboardScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           children: [
             Text('Total: ${txProvider.total.toStringAsFixed(2)}'),
+            Text('Ultimos 30 días', style: TextStyle(fontSize: 30, color: purpleBroker),),
             BalanceCard(
               balance: txProvider.total,
               ingresos: txProvider.ingresos30,
@@ -54,7 +56,7 @@ class DashboardScreen extends StatelessWidget {
             const SizedBox(height: 24),
             const Text(
               'Gastos por categoría',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: purpleBroker),
             ),
             const SizedBox(height: 16),
             ChartWidget(transactions: txProvider.transactions),

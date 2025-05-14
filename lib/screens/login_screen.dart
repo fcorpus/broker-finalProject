@@ -1,3 +1,4 @@
+import 'package:broker/constantes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:broker/providers/auth_provider.dart';
@@ -50,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _login,
+                style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purpleBroker)),
                 child: const Text('Iniciar sesión'),
               ),
               TextButton(
@@ -59,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     MaterialPageRoute(builder: (_) => const RegisterScreen()),
                   );
                 },
-                child: const Text('Crear cuenta'),
+                child: const Text('Crear cuenta', style: TextStyle(color: purpleBroker),),
               )
             ],
           ),
