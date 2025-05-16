@@ -1,3 +1,4 @@
+import 'package:broker/constantes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:broker/providers/transaction_provider.dart';
@@ -13,7 +14,8 @@ class TransactionHistoryScreen extends StatelessWidget {
     final txs = txProvider.transactions;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Historial de Transacciones')),
+      appBar: AppBar(title: const Text('historial', style: TextStyle(color: purpleBroker, fontSize: 40),), backgroundColor: backgroundColor,
+      iconTheme: const IconThemeData(color: Colors.white),),
       body: txs.isEmpty
           ? const Center(child: Text('No hay transacciones registradas.'))
           : ListView.builder(

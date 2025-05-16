@@ -1,3 +1,4 @@
+import 'package:broker/constantes.dart';
 import 'package:broker/models/transaction_model.dart';
 import 'package:broker/providers/auth_provider.dart';
 import 'package:broker/providers/transaction_provider.dart';
@@ -45,8 +46,11 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final txProvider = context.watch<TransactionProvider>();
+    final saldoDisponible = txProvider.total;
     return Scaffold(
-      appBar: AppBar(title: const Text('Registrar Transacción')),
+      appBar: AppBar(title: const Text('transacción', style: TextStyle(color: purpleBroker, fontSize: 40),), backgroundColor: backgroundColor,
+      iconTheme: const IconThemeData(color: Colors.white),),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -55,47 +59,73 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
             children: [
               DropdownButtonFormField<String>(
                 value: _type,
+                dropdownColor: Colors.black,
                 items: const [
-                  DropdownMenuItem(value: 'Ingreso', child: Text('Ingreso')),
-                  DropdownMenuItem(value: 'Gasto', child: Text('Gasto')),
+                  DropdownMenuItem(value: 'Ingreso', child: Text('Ingreso', style: TextStyle(color: Colors.white),)),
+                  DropdownMenuItem(value: 'Gasto', child: Text('Gasto', style: TextStyle(color: Colors.white),)),
                 ],
                 onChanged: (val) => setState(() => _type = val!),
-                decoration: const InputDecoration(labelText: 'Tipo'),
+                decoration: const InputDecoration(labelText: 'Tipo', labelStyle: TextStyle(color: Colors.white60)),
               ),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _amountController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Monto'),
-                validator: (val) => val == null || val.isEmpty ? 'Campo obligatorio' : null,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(
+                  labelText: 'Monto', labelStyle: TextStyle(color: Colors.white60),
+                  hintText: _type == 'Gasto' ? 'Máx: \$${saldoDisponible.toStringAsFixed(2)}' : null,
+                ),
+                validator: (val) {
+                  if (val == null || val.isEmpty) return 'Campo obligatorio';
+                  final parsed = double.tryParse(val);
+                  if (parsed == null) return 'Debe ser un número válido';
+                  if (_type == 'Gasto' && parsed > saldoDisponible) {
+                    return 'No puedes gastar más de tu saldo (\$${saldoDisponible.toStringAsFixed(2)})';
+                  }
+                  return null;
+                },
               ),
+              if (_type == 'Gasto') 
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    '*maximo: \$${saldoDisponible.toStringAsFixed(2)}',
+                    style: const TextStyle(color: purpleBroker, ),
+                  ),
+                ),
               const SizedBox(height: 12),
               if (_type == 'Gasto') ...[
                 DropdownButtonFormField<String>(
                   value: _category,
+                  dropdownColor: Colors.black, // Fondo del menú desplegable
+                  decoration: const InputDecoration(
+                    labelText: 'Categoría',
+                    labelStyle: TextStyle(color: Colors.white60),
+                    border: OutlineInputBorder(), // Opcional para bordes
+                  ),
                   items: const [
-                    DropdownMenuItem(value: 'Entretenimiento', child: Text('Entretenimiento')),
-                    DropdownMenuItem(value: 'Comida', child: Text('Comida')),
-                    DropdownMenuItem(value: 'Ropa', child: Text('Ropa')),
-                    DropdownMenuItem(value: 'Salud', child: Text('Salud')),
-                    DropdownMenuItem(value: 'Educación', child: Text('Educación')),
-                    DropdownMenuItem(value: 'Hogar', child: Text('Hogar')),
-                    DropdownMenuItem(value: 'Mascotas', child: Text('Mascotas'))
+                    DropdownMenuItem(value: 'Entretenimiento', child: Text('Entretenimiento', style: TextStyle(color: Colors.white))),
+                    DropdownMenuItem(value: 'Comida', child: Text('Comida', style: TextStyle(color: Colors.white))),
+                    DropdownMenuItem(value: 'Ropa', child: Text('Ropa', style: TextStyle(color: Colors.white))),
+                    DropdownMenuItem(value: 'Salud', child: Text('Salud', style: TextStyle(color: Colors.white))),
+                    DropdownMenuItem(value: 'Educación', child: Text('Educación', style: TextStyle(color: Colors.white))),
+                    DropdownMenuItem(value: 'Hogar', child: Text('Hogar', style: TextStyle(color: Colors.white))),
+                    DropdownMenuItem(value: 'Mascotas', child: Text('Mascotas', style: TextStyle(color: Colors.white))),
                   ],
                   onChanged: (val) => setState(() => _category = val!),
-                  decoration: const InputDecoration(labelText: 'Categoría'),
                 ),
                 const SizedBox(height: 12),
               ],
               TextFormField(
                 controller: _noteController,
-                decoration: const InputDecoration(labelText: 'Nota (opcional)'),
+                decoration: const InputDecoration(labelText: 'Nota (opcional)', labelStyle: TextStyle(color: Colors.white60)),
                 maxLines: 3,
               ),
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _submit,
-                child: const Text('Registrar'),
+                style: ElevatedButton.styleFrom(backgroundColor: purpleBroker),
+                child: const Text('Registrar', style: TextStyle(color: Colors.white),),
               ),
             ],
           ),

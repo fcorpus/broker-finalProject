@@ -85,7 +85,7 @@ class BalanceCard extends StatelessWidget {
     Color balanceColor = localBalance >= 0 ? purpleBroker : yellowBroker;
     return Card(
       color: backgroundColor,
-      elevation: 2,
+      elevation: 30,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(color: grayMargins, width: 2)
