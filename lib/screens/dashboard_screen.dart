@@ -1,10 +1,12 @@
 import 'package:broker/constantes.dart';
 import 'package:broker/models/transaction_model.dart';
 import 'package:broker/providers/auth_provider.dart';
+import 'package:broker/providers/currency_provider.dart';
 import 'package:broker/providers/transaction_provider.dart';
 import 'package:broker/screens/login_screen.dart';
 import 'package:broker/screens/transaction_form_screen.dart';
 import 'package:broker/screens/transaction_history_screen.dart';
+import 'package:broker/widgets/app_drawer.dart';
 import 'package:broker/widgets/balance_card.dart';
 import 'package:broker/widgets/chart_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +19,15 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     final txProvider = context.watch<TransactionProvider>();
+    final currencyProvider = context.watch<CurrencyProvider>();
+    
+    
+
+    final moneda = currencyProvider.selectedCurrency;
+    final convert = currencyProvider.convertFromMXN;
 
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
         backgroundColor: backgroundColor,
         automaticallyImplyLeading: false, // Evita back button automático
@@ -67,7 +76,7 @@ class DashboardScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text('Total:', style: TextStyle(fontSize: 20, color: Colors.white)),
-                    Text(' \$ ${txProvider.total.toStringAsFixed(2)}', style: TextStyle(fontSize: 30, color: Colors.white)),
+                    Text(' \$ ${convert(txProvider.total).toStringAsFixed(2)} $moneda', style: TextStyle(fontSize: 30, color: Colors.white)),
                   ],
                 ),
               ),
@@ -75,9 +84,10 @@ class DashboardScreen extends StatelessWidget {
             SizedBox(height: 20,),
             Text('Ultimos 30 días', style: TextStyle(fontSize: 30, color: purpleBroker),),
             BalanceCard(
-              balance: txProvider.total,
-              ingresos: txProvider.ingresos30,
-              gastos: txProvider.gastos30,
+              balance: convert(txProvider.total),
+              ingresos: convert(txProvider.ingresos30),
+              gastos: convert(txProvider.gastos30),
+              moneda: moneda,
             ),
             const SizedBox(height: 24),
             const Text(

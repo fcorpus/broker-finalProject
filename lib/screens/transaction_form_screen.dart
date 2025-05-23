@@ -1,6 +1,7 @@
 import 'package:broker/constantes.dart';
 import 'package:broker/models/transaction_model.dart';
 import 'package:broker/providers/auth_provider.dart';
+import 'package:broker/providers/currency_provider.dart';
 import 'package:broker/providers/transaction_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,15 +19,24 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   final _amountController = TextEditingController();
   String _category = 'Entretenimiento';
   final _noteController = TextEditingController();
+  
 
   void _submit() async {
     if (_formKey.currentState!.validate()) {
       final userId = context.read<AuthProvider>().username;
 
+      final currencyProvider = context.read<CurrencyProvider>();
+      final userCurrency = currencyProvider.selectedCurrency;
+      final amountOriginal = double.parse(_amountController.text);
+
+      final rateToMXN = currencyProvider.getRate(userCurrency) / currencyProvider.getRate('MXN');
+      final amountInMXN = amountOriginal / rateToMXN;
+
       final tx = TransactionModel(
         userId: userId,
         type: _type,
-        amount: double.parse(_amountController.text),
+        amount: amountInMXN,
+        currency: userCurrency,
         category: _type == 'Gasto' ? _category : '',
         note: _noteController.text,
         date: DateTime.now(),
@@ -47,7 +57,13 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   @override
   Widget build(BuildContext context) {
     final txProvider = context.watch<TransactionProvider>();
-    final saldoDisponible = txProvider.total;
+    final currencyProvider = context.watch<CurrencyProvider>();
+    final saldoDisponibleMXN = txProvider.total;
+    final moneda = currencyProvider.selectedCurrency;
+
+    final rateToMXN = currencyProvider.getRate(moneda) / currencyProvider.getRate('MXN');
+    final saldoDisponible = saldoDisponibleMXN * rateToMXN;
+
     return Scaffold(
       appBar: AppBar(title: const Text('transacción', style: TextStyle(color: purpleBroker, fontSize: 40),), backgroundColor: backgroundColor,
       iconTheme: const IconThemeData(color: Colors.white),),
@@ -70,10 +86,11 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
               const SizedBox(height: 12),
               TextFormField(
                 controller: _amountController,
+                style: TextStyle(color: Colors.white),
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
-                  labelText: 'Monto', labelStyle: TextStyle(color: Colors.white60),
-                  hintText: _type == 'Gasto' ? 'Máx: \$${saldoDisponible.toStringAsFixed(2)}' : null,
+                  labelText: 'Monto ($_type en $moneda)', labelStyle: TextStyle(color: Colors.white60),
+                  hintText: _type == 'Gasto' ? 'Máx: \$${saldoDisponible.toStringAsFixed(2)} $moneda' : null,
                 ),
                 validator: (val) {
                   if (val == null || val.isEmpty) return 'Campo obligatorio';
@@ -89,7 +106,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Text(
-                    '*maximo: \$${saldoDisponible.toStringAsFixed(2)}',
+                    '*maximo: \$${saldoDisponible.toStringAsFixed(2)} $moneda',
                     style: const TextStyle(color: purpleBroker, ),
                   ),
                 ),
@@ -118,7 +135,8 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
               ],
               TextFormField(
                 controller: _noteController,
-                decoration: const InputDecoration(labelText: 'Nota (opcional)', labelStyle: TextStyle(color: Colors.white60)),
+                style: TextStyle(color: Colors.white),
+                decoration: const InputDecoration(labelText: 'Nota (opcional)', labelStyle: TextStyle(color: Colors.white70)),
                 maxLines: 3,
               ),
               const SizedBox(height: 24),

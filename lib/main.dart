@@ -1,5 +1,5 @@
 import 'package:broker/constantes.dart';
-import 'package:broker/demo.dart';
+import 'package:broker/providers/currency_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +18,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => TransactionProvider()),
+        ChangeNotifierProvider(create: (_) => CurrencyProvider()),
       ],
       child: const BrokerApp(),
     ),

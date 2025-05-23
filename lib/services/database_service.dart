@@ -28,7 +28,8 @@ class DatabaseService {
             amount REAL,
             category TEXT,
             note TEXT,
-            date TEXT
+            date TEXT,
+            currency TEXT DEFAULT 'MXN'
           )
         ''');
       },

@@ -6,6 +6,7 @@ class TransactionModel {
   String category;
   String note;
   DateTime date;
+  String currency;
 
   TransactionModel({
     this.id,
@@ -15,6 +16,7 @@ class TransactionModel {
     required this.category,
     required this.note,
     required this.date,
+    required this.currency
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +28,7 @@ class TransactionModel {
       'category': category,
       'note': note,
       'date': date.toIso8601String(),
+      'currency': currency
     };
   }
 
@@ -38,6 +41,7 @@ class TransactionModel {
       category: map['category'],
       note: map['note'],
       date: DateTime.parse(map['date']),
+      currency: map['currency'],
     );
   }
 }

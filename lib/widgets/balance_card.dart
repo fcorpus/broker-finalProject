@@ -8,12 +8,14 @@ class BalanceCard extends StatelessWidget {
   final double balance;
   final double ingresos;
   final double gastos;
+  final String moneda;
 
   const BalanceCard({
     super.key,
     required this.balance,
     required this.ingresos,
     required this.gastos,
+    required this.moneda,
   });
 
   BarChart _buildHorizontalBarChart() {
@@ -102,9 +104,9 @@ class BalanceCard extends StatelessWidget {
                   child: _buildHorizontalBarChart(),
                 ),
             ),
-            Text('Ingresos: \$${ingresos.toStringAsFixed(2)} MXN', style: const TextStyle(color: purpleBroker)),
-            Text('Gastos: \$${gastos.toStringAsFixed(2)} MXN', style: const TextStyle(color: yellowBroker)),
-            Text('Balance: \$${localBalance.toStringAsFixed(2)} MXN',
+            Text('Ingresos: \$${ingresos.toStringAsFixed(2)} $moneda', style: const TextStyle(color: purpleBroker)),
+            Text('Gastos: \$${gastos.toStringAsFixed(2)} $moneda', style: const TextStyle(color: yellowBroker)),
+            Text('Balance: \$${localBalance.toStringAsFixed(2)} $moneda',
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: balanceColor)),
             const SizedBox(height: 12),
             

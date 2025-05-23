@@ -31,4 +31,34 @@ class AuthProvider with ChangeNotifier {
     _username = null;
     notifyListeners();
   }
+
+  Future<List<String>> getUserList() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList('user_list') ?? [];
+  }
+
+  Future<void> addUser(String username) async {
+    final prefs = await SharedPreferences.getInstance();
+    final users = prefs.getStringList('user_list') ?? [];
+    if (!users.contains(username)) {
+      users.add(username);
+      await prefs.setStringList('user_list', users);
+    }
+    await login(username);
+  }
+
+  Future<void> deleteUser(String username) async {
+    final prefs = await SharedPreferences.getInstance();
+    final users = prefs.getStringList('user_list') ?? [];
+    users.remove(username);
+    await prefs.setStringList('user_list', users);
+
+    // Si el usuario eliminado estaba logueado, cerramos sesión
+    if (_username == username) {
+      await logout();
+    }
+
+    notifyListeners();
+  }
+
 }
