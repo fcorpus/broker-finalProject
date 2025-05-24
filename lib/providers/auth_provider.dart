@@ -53,7 +53,7 @@ class AuthProvider with ChangeNotifier {
     users.remove(username);
     await prefs.setStringList('user_list', users);
 
-    // Si el usuario eliminado estaba logueado, cerramos sesión
+    
     if (_username == username) {
       await logout();
     }

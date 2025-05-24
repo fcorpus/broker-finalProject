@@ -100,7 +100,7 @@ class BalanceCard extends StatelessWidget {
             SizedBox(
               height: 200,
                 child: RotatedBox(
-                  quarterTurns: 1, // Rota 90 grados
+                  quarterTurns: 1,
                   child: _buildHorizontalBarChart(),
                 ),
             ),

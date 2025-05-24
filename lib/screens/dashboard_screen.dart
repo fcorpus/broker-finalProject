@@ -108,7 +108,7 @@ class DashboardScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Container(
-                        height: 80, // cuadrado aproximado
+                        height: 80,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: grayMargins, width: 2),

@@ -40,12 +40,12 @@ class CurrencyProvider with ChangeNotifier {
 
     try {
       final response = await http.get(uri);
-      print('Response body: ${response.body}');
+      //print('Response body: ${response.body}'); //ver respuesta era para testeo
       final data = jsonDecode(response.body);
       if (data['success']) {
         _rates = (data['rates'] as Map<String, dynamic>)
           .map((key, value) => MapEntry(key, (value as num).toDouble()));
-        print('Rates: $_rates');
+        //print('Rates: $_rates'); //ver los rates de las monedas era para testeo
       } else {
         debugPrint("Error: ${data['error']['info']}");
       }

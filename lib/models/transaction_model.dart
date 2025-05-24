@@ -1,7 +1,7 @@
 class TransactionModel {
   int? id;
-  String userId; // nombre del usuario que la creó
-  String type; // 'Ingreso' o 'Gasto'
+  String userId; 
+  String type; 
   double amount;
   String category;
   String note;
